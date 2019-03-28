@@ -208,7 +208,7 @@ void LUA_START_CALLBACK(SScriptCallBack* p)
             if (-1!=simGetScriptProperty(p->scriptID,&prop,&obj))
             {
                 int scriptType=((prop|sim_scripttype_threaded)-sim_scripttype_threaded);
-                bool destroyAtSimulationEnd=( (scriptType==sim_scripttype_mainscript)||(scriptType==sim_scripttype_childscript)||(scriptType==sim_scripttype_jointctrlcallback)||(scriptType==sim_scripttype_contactcallback)||(scriptType==sim_scripttype_generalcallback) );
+                bool destroyAtSimulationEnd=( (scriptType==sim_scripttype_mainscript)||(scriptType==sim_scripttype_childscript) );
                 link->setDestroyAtSimulationEnd(destroyAtSimulationEnd);
             }
         }
