@@ -3,7 +3,7 @@ include(config.pri)
 QT -= core
 QT -= gui
 
-TARGET = v_repExtLuaRemoteApiClient
+TARGET = simExtLuaRemoteApiClient
 TEMPLATE = lib
 
 DEFINES -= UNICODE
@@ -42,38 +42,38 @@ DEFINES += MAX_EXT_API_CONNECTIONS=255
 INCLUDEPATH += $$BOOST_INCLUDEPATH
 
 win32 {
-    DEFINES += WIN_VREP
+    DEFINES += WIN_SIM
     LIBS += -lwinmm
     LIBS += -lWs2_32
 }
 
 macx {
-    DEFINES += MAC_VREP
+    DEFINES += MAC_SIM
 }
 
 unix:!macx {
-    DEFINES += LIN_VREP
+    DEFINES += LIN_SIM
     LIBS += -lrt
 }
 
 SOURCES += \
-    v_repExtLuaRemoteApiClient.cpp \
+    simExtLuaRemoteApiClient.cpp \
     remoteApiLink.cpp \
     ../remoteApi/extApi.c \
     ../remoteApi/extApiPlatform.c \
     ../common/scriptFunctionData.cpp \
     ../common/scriptFunctionDataItem.cpp \
-    ../common/v_repLib.cpp \
+    ../common/simLib.cpp \
     ../common/shared_memory.c \
 
 HEADERS +=\
-    v_repExtLuaRemoteApiClient.h \
+    simExtLuaRemoteApiClient.h \
     remoteApiLink.h \
     ../remoteApi/extApi.h \
     ../remoteApi/extApiPlatform.h \
     ../include/scriptFunctionData.h \
     ../include/scriptFunctionDataItem.h \
-    ../include/v_repLib.h \
+    ../include/simLib.h \
     ../include/shared_memory.h \
 
 unix:!symbian {

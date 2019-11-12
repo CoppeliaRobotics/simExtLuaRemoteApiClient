@@ -360,7 +360,7 @@ void CRemoteApiLink::handleCommand(int cmdId,CScriptFunctionData* inOutData,bool
         if (blocking)
         {
             if (threaded)
-            { // we have a threaded script calling. We wait while switching it. V-REP is NOT blocking during that time:
+            { // we have a threaded script calling. We wait while switching it. CoppeliaSim is NOT blocking during that time:
                 if (simSwitchThread()<1)
                 { // the switch failed (e.g. simSetThreadAutomaticSwitch(false) was maybe called)
                     #ifdef _WIN32
@@ -371,7 +371,7 @@ void CRemoteApiLink::handleCommand(int cmdId,CScriptFunctionData* inOutData,bool
                 }
             }
             else
-            { // we have a non-threaded script calling. We wait a bit. V-REP is blocking during that time: 
+            { // we have a non-threaded script calling. We wait a bit. CoppeliaSim is blocking during that time:
                 #ifdef _WIN32
                     Sleep(1);
                 #else
@@ -380,7 +380,7 @@ void CRemoteApiLink::handleCommand(int cmdId,CScriptFunctionData* inOutData,bool
             }
         }
         else
-        { // simply do a thread switch (very short wait). V-REP is blocking during that time:
+        { // simply do a thread switch (very short wait). CoppeliaSim is blocking during that time:
             #ifdef _WIN32
                 Sleep(0);
             #else
