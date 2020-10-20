@@ -154,7 +154,7 @@ bool isScriptThreaded(int scriptID)
 {
     int prop,obj;
     if (-1!=simGetScriptProperty(scriptID,&prop,&obj))
-        return((prop&sim_scripttype_threaded)!=0);
+        return((prop&sim_scripttype_threaded_old)!=0);
     return(false);
 }
 
@@ -207,7 +207,7 @@ void LUA_START_CALLBACK(SScriptCallBack* p)
             int prop,obj;
             if (-1!=simGetScriptProperty(p->scriptID,&prop,&obj))
             {
-                int scriptType=((prop|sim_scripttype_threaded)-sim_scripttype_threaded);
+                int scriptType=((prop|sim_scripttype_threaded_old)-sim_scripttype_threaded_old);
                 bool destroyAtSimulationEnd=( (scriptType==sim_scripttype_mainscript)||(scriptType==sim_scripttype_childscript) );
                 link->setDestroyAtSimulationEnd(destroyAtSimulationEnd);
             }
