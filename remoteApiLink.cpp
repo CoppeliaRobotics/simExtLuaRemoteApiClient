@@ -1270,4 +1270,20 @@ void CRemoteApiLink::_handleCommand(int cmdId,CScriptFunctionData* inOutData)
         int res=simxSetObjectIntParameter(_clientId,inData->at(1).int32Data[0],inData->at(2).int32Data[0],inData->at(3).int32Data[0],inData->at(4).int32Data[0]);
         inOutData->pushOutData(CScriptFunctionDataItem(res));
     }
+    if (cmdId==100)
+    { // simxCheckDistance
+        float dist;
+        int res=simxCheckDistance(_clientId,inData->at(1).int32Data[0],inData->at(2).int32Data[0],&dist,inData->at(3).int32Data[0]);
+        inOutData->pushOutData(CScriptFunctionDataItem(res));
+        if (res==0)
+            inOutData->pushOutData(CScriptFunctionDataItem(dist));
+    }
+    if (cmdId==101)
+    { // simxCheckCollision
+        unsigned char collState;
+        int res=simxCheckCollision(_clientId,inData->at(1).int32Data[0],inData->at(2).int32Data[0],&collState,inData->at(3).int32Data[0]);
+        inOutData->pushOutData(CScriptFunctionDataItem(res));
+        if (res==0)
+            inOutData->pushOutData(CScriptFunctionDataItem(collState));
+    }
 }

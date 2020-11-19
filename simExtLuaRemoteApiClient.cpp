@@ -1915,6 +1915,70 @@ void LUA_GETOBJECTINTPARAMETER_CALLBACK(SScriptCallBack* p)
 // --------------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------------
+// simxCheckDistance
+// --------------------------------------------------------------------------------------
+#define LUA_CHECKDISTANCE_COMMAND "simx.checkDistance"
+
+const int inArgs_CHECKDISTANCE[]={
+    4,
+    sim_script_arg_int32,0,
+    sim_script_arg_int32,0,
+    sim_script_arg_int32,0,
+    sim_script_arg_int32,0,
+};
+
+void LUA_CHECKDISTANCE_CALLBACK(SScriptCallBack* p)
+{
+
+    CScriptFunctionData D;
+    if (D.readDataFromStack(p->stackID,inArgs_CHECKDISTANCE,inArgs_CHECKDISTANCE[0],LUA_CHECKDISTANCE_COMMAND))
+    {
+        std::vector<CScriptFunctionDataItem>* inData=D.getInDataPtr();
+        int clientId=inData->at(0).int32Data[0];
+        int operationMode=inData->at(3).int32Data[0];
+        int index=getIndexFromClientId(clientId);
+        if (index!=-1)
+            allRemoteApiClients[index]->handleCommand(100,&D,operationMode==simx_opmode_blocking,isScriptThreaded(p->scriptID)); // after calling this, index might not be valid anymore!!
+        else
+            simSetLastError(LUA_CHECKDISTANCE_COMMAND,"Invalid client ID."); // output an error
+    }
+    D.writeDataToStack(p->stackID);
+}
+// --------------------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------------------
+// simxCheckCollision
+// --------------------------------------------------------------------------------------
+#define LUA_CHECKCOLLISION_COMMAND "simx.checkCollision"
+
+const int inArgs_CHECKCOLLISION[]={
+    4,
+    sim_script_arg_int32,0,
+    sim_script_arg_int32,0,
+    sim_script_arg_int32,0,
+    sim_script_arg_int32,0,
+};
+
+void LUA_CHECKCOLLISION_CALLBACK(SScriptCallBack* p)
+{
+
+    CScriptFunctionData D;
+    if (D.readDataFromStack(p->stackID,inArgs_CHECKCOLLISION,inArgs_CHECKCOLLISION[0],LUA_CHECKCOLLISION_COMMAND))
+    {
+        std::vector<CScriptFunctionDataItem>* inData=D.getInDataPtr();
+        int clientId=inData->at(0).int32Data[0];
+        int operationMode=inData->at(3).int32Data[0];
+        int index=getIndexFromClientId(clientId);
+        if (index!=-1)
+            allRemoteApiClients[index]->handleCommand(101,&D,operationMode==simx_opmode_blocking,isScriptThreaded(p->scriptID)); // after calling this, index might not be valid anymore!!
+        else
+            simSetLastError(LUA_CHECKCOLLISION_COMMAND,"Invalid client ID."); // output an error
+    }
+    D.writeDataToStack(p->stackID);
+}
+// --------------------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------------------
 // simxGetObjectGroupData
 // --------------------------------------------------------------------------------------
 #define LUA_GETOBJECTGROUPDATA_COMMAND "simx.getObjectGroupData"
@@ -3501,6 +3565,8 @@ SIM_DLLEXPORT unsigned char simStart(void* reservedPointer,int reservedInt)
     simRegisterScriptCallbackFunction(strConCat(LUA_GETOBJECTCHILD_COMMAND,"@","LuaRemoteApiClient"),strConCat("number returnCode,number childObjectHandle=",LUA_GETOBJECTCHILD_COMMAND,"(number clientId,number parentObjectHandle,number childIndex,number operationMode)"),LUA_GETOBJECTCHILD_CALLBACK);
     simRegisterScriptCallbackFunction(strConCat(LUA_GETOBJECTFLOATPARAMETER_COMMAND,"@","LuaRemoteApiClient"),strConCat("number returnCode,number parameterValue=",LUA_GETOBJECTFLOATPARAMETER_COMMAND,"(number clientId,number objectHandle,number parameterId,number operationMode)"),LUA_GETOBJECTFLOATPARAMETER_CALLBACK);
     simRegisterScriptCallbackFunction(strConCat(LUA_GETOBJECTINTPARAMETER_COMMAND,"@","LuaRemoteApiClient"),strConCat("number returnCode,number parameterValue=",LUA_GETOBJECTINTPARAMETER_COMMAND,"(number clientId,number objectHandle,number parameterId,number operationMode)"),LUA_GETOBJECTINTPARAMETER_CALLBACK);
+    simRegisterScriptCallbackFunction(strConCat(LUA_CHECKDISTANCE_COMMAND,"@","LuaRemoteApiClient"),strConCat("number returnCode,number distance=",LUA_CHECKDISTANCE_COMMAND,"(number clientId,number entity1,number entity2,number operationMode)"),LUA_CHECKDISTANCE_CALLBACK);
+    simRegisterScriptCallbackFunction(strConCat(LUA_CHECKCOLLISION_COMMAND,"@","LuaRemoteApiClient"),strConCat("number returnCode,number collisionState=",LUA_CHECKCOLLISION_COMMAND,"(number clientId,number entity1,number entity2,number operationMode)"),LUA_CHECKCOLLISION_CALLBACK);
     simRegisterScriptCallbackFunction(strConCat(LUA_GETOBJECTGROUPDATA_COMMAND,"@","LuaRemoteApiClient"),strConCat("number returnCode,table handles,table intData,table floatData,table stringData=",LUA_GETOBJECTGROUPDATA_COMMAND,"(number clientId,number objectType,number dataType,number operationMode)"),LUA_GETOBJECTGROUPDATA_CALLBACK);
     simRegisterScriptCallbackFunction(strConCat(LUA_GETOBJECTORIENTATION_COMMAND,"@","LuaRemoteApiClient"),strConCat("number returnCode,table_3 eulerAngles=",LUA_GETOBJECTORIENTATION_COMMAND,"(number clientId,number objectHandle,number relativeToObjectHandle,number operationMode)"),LUA_GETOBJECTORIENTATION_CALLBACK);
     simRegisterScriptCallbackFunction(strConCat(LUA_GETOBJECTPOSITION_COMMAND,"@","LuaRemoteApiClient"),strConCat("number returnCode,table_3 position=",LUA_GETOBJECTPOSITION_COMMAND,"(number clientId,number objectHandle,number relativeToObjectHandle,number operationMode)"),LUA_GETOBJECTPOSITION_CALLBACK);
